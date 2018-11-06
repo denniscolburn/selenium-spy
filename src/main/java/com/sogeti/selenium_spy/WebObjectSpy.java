@@ -1,7 +1,9 @@
 package com.sogeti.selenium_spy;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,11 +19,7 @@ public class WebObjectSpy {
 
 	public static void main(String[] args) {
 
-		// String html = "<html><head><title>First parse</title></head>"
-		// + "<body><p>Parsed HTML into a doc.</p></body></html>";
-		// Document doc = Jsoup.parse(html);
-
-		String url = "http://puppies.herokuapp.com/";
+		String url = args[0];
 		// String url = "https://travis-ci.org/denniscolburn/selenium-spy";
 		// String url = "https://en.wikipedia.org/wiki/Main_Page";
 		System.out.println(url);
@@ -36,36 +34,45 @@ public class WebObjectSpy {
 		String title = doc.title();
 		System.out.println(title);
 
+		HashMap<String, String> linksData = new HashMap<String, String>();
 		System.out.println("*** Links ***");
 		Elements links = doc.select("a[href]");
 		for (Element link : links) {
 			System.out.println(link.text());
 			System.out.println(link.attr("href"));
+			linksData.put(link.attr("href"), link.text());
 		}
 		// TODO alt="Home" indicates home button
+		
+		for (Entry<String, String> entry : linksData.entrySet()) {
+		    String key = entry.getKey();
+		    Object value = entry.getValue();
+		    System.out.println("key: : " + key + " value: " + value);
 
-		System.out.println("*** Buttons ***");
-		Elements buttons = doc.select("input.rounded_button");
-		for (Element button : buttons) {
-			System.out.println(button.attr("value"));
 		}
 
-		System.out.println("*** Inputs ***");
-		Elements inputs = doc.select("input");
-		for (Element input : inputs) {
-			System.out.println(input.attr("value") + ";" + input.attr("name"));
-		}
-
-		System.out.println("*** Media ***");
-		Elements media = doc.select("[src]");
-		for (Element m : media) {
-			System.out.println(m);
-		}
+//		System.out.println("*** Buttons ***");
+//		Elements buttons = doc.select("input.rounded_button");
+//		for (Element button : buttons) {
+//			System.out.println(button.attr("value"));
+//		}
+//
+//		System.out.println("*** Inputs ***");
+//		Elements inputs = doc.select("input");
+//		for (Element input : inputs) {
+//			System.out.println(input.attr("value") + ";" + input.attr("name"));
+//		}
+//
+//		System.out.println("*** Media ***");
+//		Elements media = doc.select("[src]");
+//		for (Element m : media) {
+//			System.out.println(m);
+//		}
 
 		MongoClient mongo = new MongoClient("localhost", 27017);
 
 		// Accessing the database
-		MongoDatabase database = mongo.getDatabase("sandbox");
+		MongoDatabase database = mongo.getDatabase("selenium-spy");
 
 		// Creating a collection
 		// database.createCollection("sampleCollection");
