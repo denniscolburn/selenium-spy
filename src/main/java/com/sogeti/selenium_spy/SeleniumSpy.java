@@ -12,12 +12,13 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.sogeti.selenium_spy.helpers.HtmlHelper;
 //import com.mongodb.client.model.Filters;
 
 public class SeleniumSpy {
 
 	public static void main(String[] args) {
-
+		
 		// String html = "<html><head><title>First parse</title></head>"
 		// + "<body><p>Parsed HTML into a doc.</p></body></html>";
 		// Document doc = Jsoup.parse(html);
@@ -33,7 +34,7 @@ public class SeleniumSpy {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String title = doc.title();
+		String title = HtmlHelper.getTitle(doc);
 		System.out.println(title);
 
 		System.out.println("*** Links ***");
